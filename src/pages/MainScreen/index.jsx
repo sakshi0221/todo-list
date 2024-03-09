@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DELETEAlert from "../../components/DELETEAlert/index";
-import { Button, Img, Text, Input, Heading,TextArea } from "../../components";
+import { Button, Img, Text, Input, Heading } from "../../components";
 import Modal from "../../components/TextFieldModal/index"
 
 export default function MainScreen() {
@@ -57,15 +57,16 @@ export default function MainScreen() {
   const handleInputChange = (e, inputType) => {
     if (e && e.target) {
       const inputValue = e.target.value;
-  
+      console.log(e.target.value, "e.target.value")
       if (inputType === "title") {
         setInputTitle(inputValue);
       } else if (inputType === "body") {
         setInputBody(inputValue);
+        console.log("Input Body:", inputBody);
       }
     }
   };
-  
+
 
   const handleUpdateClick = () => {
     setIsEditMode(false);
@@ -96,7 +97,7 @@ export default function MainScreen() {
       setSelectedTaskIndex(index);
     }
   };
-  
+
   return (
     <>
       <div style={{ height: "100vh", backgroundColor: "#1B1A17", color: "white" }}>
@@ -116,18 +117,28 @@ export default function MainScreen() {
             <div className="flex flex-row justify-start w-[38%] md:w-[60%] sm:w-[82%] mt-[62px] gap-2 sm:gap-5 ">
               <div className="flex flex-col items-center justify-start w-[86%] sm:w-full gap-1.5">
                 <div className="flex flex-row justify-center w-full">
-                  <Input shape="round" name="input" placeholder="Title..." className="w-full sm:w-full" onChange={(e) => handleInputChange(e, "title")} />
+                  <Input shape="round" name="input" placeholder="Title..." className="w-full sm:w-full" onChange={(e) => handleInputChange(e, "title")} disabled={inputBody}
+                  />
                 </div>
                 <div className="flex flex-row justify-center w-full">
-                  <TextArea
-                    shape="round"
-                    name="inputone"
+                  <textarea
                     placeholder="Input..."
                     value={inputBody}
+                    className="w-full sm:w-full border-orange-600 border border-solid bg-gray-900 rounded"
                     onChange={(e) => handleInputChange(e, "body")}
-                    className="w-full sm:w-full"
-                    disabled={inputBody === "Lorem ipsum dolor sit amet consectetur. Tristique donec congue massa vehicula in. Enim rutrum proin sem velit sodales sem sapien. Euismod tristique massa tellus nisi sem in aliquam sed donec. Cras at morbi vivamus ultrices...."}
-                  />
+                    style={{
+                      height: inputBody === "Lorem ipsum dolor sit amet consectetur. Tristique donec congue massa vehicula in. Enim rutrum proin sem velit sodales sem sapien. Euismod tristique massa tellus nisi sem in aliquam sed donec. Cras at morbi vivamus ultrices...." ? "132px" : " 32px",
+                      borderRadius: "4px",
+                      border: "1px solid #A35709",
+                      backgroundColor: "#242320",
+                      padding: "5px 38px",
+                      resize: "none",
+                      color: "#F0E3CAA3",
+                    }}
+                    disabled={inputBody === "Lorem ipsum dolor sit amet consectetur. Tristique donec congue massa vehicula in. Enim rutrum proin sem velit sodales sem sapien. Euismod tristique massa tellus nisi sem in aliquam sed donec. Cras at morbi vivamus ultrices...." || isEditMode}
+
+                  ></textarea>
+
 
                 </div>
               </div>
@@ -264,7 +275,7 @@ export default function MainScreen() {
           yesDisabled={true}
         />
       )}
-       {isMobileEditModalOpen && (
+      {isMobileEditModalOpen && (
         <Modal
           isOpen={isMobileEditModalOpen}
           onClose={() => {
